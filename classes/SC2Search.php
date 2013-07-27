@@ -77,8 +77,9 @@ class SC2Search {
 		$region = GeneralUtils::mapKeyToValue($ranksRegionMapper, $options['region']);
 	
 		$targetURL = 'http://www.sc2ranks.com/search/' . 
-					$options['type'] . '/' . $region . 
-					'/' . rawurlencode($options['name']) . '/' . ($options['page'] - 1)* 100;
+					$options['game'] . '/' . $region . 
+					'/' . $options['ladder'] . '/' . $options['league'] . '/all/' . $options['type'] . '/' .
+		            rawurlencode($options['name']);
 					
 		return $targetURL;
 	}

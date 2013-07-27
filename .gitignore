@@ -1,5 +1,8 @@
 # OS X noise
 .DS_Store
+.buildpath
+.project
+.settings/*
 
 # TextMate noise
 *.tm_build_errors

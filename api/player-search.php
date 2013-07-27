@@ -20,18 +20,22 @@ $options['league'] = $_REQUEST['league'];  // bronze, silver, gold, platinum, di
 if ( ( !isset($options['content'] ) || $options['content'] == '' ) && 
      ( !isset($options['url']) || $options['url'] == '' ) ) {
     // Constants
-    $defaultParams = array('region' => 'global',
+    $defaultParams = array(
+                           'game' => 'hots',  // hots (heart of the swarm or wol (wings of libert))
+                           'region' => 'global',
+                           'ladder' => '1v1', // 1v1, 2v2, 3v3, 4v4, 2v2r, 3v3r, 4v4r
+                           'league' => 'all', //all, grandmaster, master, diamond, platinum, gold, silver, bronze
                            'name' => 'Draco',
-                           'type' => 'starts', // contains, starts, end, exact
-                           'page' => '1');
+                           'type' => 'exact');
     
     // Get basic parameters
     $options = array();
-    $options['region'] = $_REQUEST['region'];   // global, na, eu, sea, krtw, cn
-    $options['name'] = $_REQUEST['name'];       // word to search for
-    $options['name'] = $_REQUEST['name'];
-    $options['type'] = $_REQUEST['type'];       // exact, contains, starts
-    $options['page'] = $_REQUEST['page'];       // starting page
+    $options['game'] = $_REQUEST['game'];  
+    $options['region'] = $_REQUEST['region'];
+    $options['ladder'] = $_REQUEST['ladder'];       
+    $options['league'] = $_REQUEST['league'];
+    $options['name'] = $_REQUEST['name'];       
+    $options['type'] = $_REQUEST['type'];  
     
     $options = GeneralUtils::getDefaults($defaultParams, $options);
     
@@ -39,7 +43,8 @@ if ( ( !isset($options['content'] ) || $options['content'] == '' ) &&
     $targetURL = SC2Search::getTargetURL($options);
     
     // Get URL to use
-    RestUtils::sendResponse(200, $targetURL, '', 'text-plain');
+    GeneralUtils::printJSON(json_encode(array('targetUrl' => $targetURL)));
+    //RestUtils::sendResponse(200, $targetURL, '', 'text-plain');
     exit;
 }
 
