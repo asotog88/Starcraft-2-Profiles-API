@@ -51,9 +51,8 @@ class SC2Search {
 
 	public function getProfileURLResult()
 	{
-		$vars = 'character[url]=' . $this->options['url'];
-		$targetURL = 'http://www.sc2ranks.com/char';
-		$urlconnect = new URLConnect($targetURL, 100, FALSE, True, $vars);
+		$targetURL = $this->options['url'];
+		$urlconnect = new URLConnect($targetURL, 100, FALSE);
 		if ( $urlconnect->getHTTPCode() != 200 ) {
 			RestUtils::sendResponse($urlconnect->getHTTPCode());
 		 	exit;
@@ -90,12 +89,12 @@ class SC2Search {
 		$domHTML = str_get_html($this->content);
 
 		// Handle when sc2ranks did not return the search table but the results page
-		if ( count($domHTML->find('table.search')) == 0) {
+		if ( count($domHTML->find('#search_index .table')) == 0) {
 			return $this->getRanksSinglePageResult($domHTML);
 		}
 
 		// From now on handle when the result returned is a table
-		$rawResults = $domHTML->find('.tblrow');
+		$rawResults = $domHTML->find('.table tbody tr');
 
 		// Initilize our results array
 		$jsonArray = array();
@@ -111,68 +110,71 @@ class SC2Search {
 			$onePlayer = array();
 			
 			// Add search result player data
-			$tempChar = $oneResult->find('.character0 a', 0);
-			$charName = $tempChar->plaintext;
-			$partialLink = $tempChar->getAttribute('href');
-			$charLink = RANKSURL . $partialLink;
-			$onePlayer['name'] = $charName;
-			$onePlayer['ranksURL'] = $charLink;
-			$onePlayer['bnetURL'] = SC2Utils::estimateBLink($onePlayer['ranksURL']);	
-			$onePlayer['region'] = SC2Utils::playerRegionFromBnetURL($onePlayer['bnetURL']);
-			
-			// Get user's best division data
-			$oneDivision = array();
-			{
-				// Get region for player
-				$oneDivision['region'] = $onePlayer['region'];
-				
-				// Get division points
-				$tempNode = $oneResult->find('.points', 0);
-				$points = $tempNode->find('span', 0)->plaintext;
-				$oneDivision['points'] = GeneralUtils::parseInt($points);
-				
-				// Get division league
-				$league = $tempNode->find('img', 0)->getAttribute('alt');
-				$endPos = strpos($league, '-');
-				$league = substr($league, 0, $endPos);
-				$oneDivision['league'] = strtolower($league);
-				
-				// Get division type
-				$typeString = $tempNode->find('span', 1)->plaintext;
-				preg_match('/\d+/', $typeString, $matches);
-				$type = $matches[0];
-				$oneDivision['bracket'] = GeneralUtils::parseInt($type);
-				
-				// Get wins
-				$wins = $oneResult->find('.wins', 0)->plaintext;
-				$oneDivision['wins'] = GeneralUtils::parseInt($wins);
-				
-				if ( count($oneResult->find('.losses')) > 0 ) {
-					$losses = $oneResult->find('.losses', 0)->plaintext;
-					$oneDivision['losses'] = GeneralUtils::parseInt($losses);
-					$diviser = $oneDivision['wins'] + $oneDivision['losses'];
-					$oneDivision['winRatio'] = ($diviser > 0) ? $oneDivision['wins'] / $diviser : 0;
-				}
-				
-				// Get division rank
-				$allContent = $oneResult->find('.division', 0)->plaintext;
-				$startpos = strpos($allContent, '#') + 1;
-				$endpos = strpos($allContent, ')');
-				$divisionRank = substr($allContent, $startpos, ($endpos - $startpos));
-				$oneDivision['rank'] = GeneralUtils::parseInt($divisionRank);
-				
-				// Get division name
-				$oneDivision['name'] = $oneResult->find('.division a', 0)->plaintext;
-					
-				// Get division url
-				$divisionURL = RANKSURL . $oneResult->find('.division a', 0)->getAttribute('href');
-				$oneDivision['ranksURL'] = $divisionURL;
+			$tempChar = $oneResult->find('.character a', 0);
+			if ($tempChar) {
+			    $charName = $tempChar->plaintext;
+			    $partialLink = $tempChar->getAttribute('href');
+			    $charLink = RANKSURL . $partialLink;
+			    $onePlayer['name'] = $charName;
+			    $onePlayer['ranksURL'] = $charLink;
+			    $onePlayer['bnetURL'] = SC2Utils::estimateBLink($onePlayer['ranksURL']);
+			    $onePlayer['region'] = SC2Utils::playerRegionFromBnetURL($onePlayer['bnetURL']);
+			    	
+			    // Get user's best division data
+			    $oneDivision = array();
+			    {
+			        // Get region for player
+			        $oneDivision['region'] = $onePlayer['region'];
+			    
+			        // Get division points
+			        $tempNode = $oneResult->find('.points', 0);
+			        $points = $tempNode->plaintext;
+			        $oneDivision['points'] = GeneralUtils::parseInt($points);
+			    
+			        // Get division league
+			        //$league = $tempNode->find('img', 0)->getAttribute('alt');
+			        //$endPos = strpos($league, '-');
+			        //$league = substr($league, 0, $endPos);
+			        //$oneDivision['league'] = strtolower($league);
+			    
+			        // Get division type
+			        $typeString = $tempNode->find('span', 1)->plaintext;
+			        preg_match('/\d+/', $typeString, $matches);
+			        $type = $matches[0];
+			        $oneDivision['bracket'] = GeneralUtils::parseInt($type);
+			    
+			        // Get wins
+			        $wins = $oneResult->find('.wins', 0)->plaintext;
+			        $oneDivision['wins'] = GeneralUtils::parseInt($wins);
+			    
+			        if ( count($oneResult->find('.losses')) > 0 ) {
+			            $losses = $oneResult->find('.losses', 0)->plaintext;
+			            $oneDivision['losses'] = GeneralUtils::parseInt($losses);
+			            $diviser = $oneDivision['wins'] + $oneDivision['losses'];
+			            $oneDivision['winRatio'] = ($diviser > 0) ? $oneDivision['wins'] / $diviser : 0;
+			        }
+			    
+			        // Get division rank
+			        $allContent = $oneResult->find('.division', 0)->plaintext;
+			        $startpos = strpos($allContent, '#') + 1;
+			        $endpos = strpos($allContent, ')');
+			        $divisionRank = substr($allContent, $startpos, ($endpos - $startpos));
+			        $oneDivision['rank'] = GeneralUtils::parseInt($divisionRank);
+			    
+			        // Get division name
+			        $oneDivision['name'] = $oneResult->find('.division a', 0)->plaintext;
+			        	
+			        // Get division url
+			        //$divisionURL = RANKSURL . $oneResult->find('.division a', 0)->getAttribute('href');
+			        //$oneDivision['ranksURL'] = $divisionURL;
+			    }
+			    // Add division to one search
+			    $onePlayer['divisions'] = $oneDivision;
+			    	
+			    // Add one result to search content
+			    $jsonArray['players'][] = $onePlayer;
 			}
-			// Add division to one search
-			$onePlayer['divisions'] = $oneDivision;
 			
-			// Add one result to search content
-			$jsonArray['players'][] = $onePlayer;
 				
 		}// End adding all our search results
 		
@@ -186,12 +188,12 @@ class SC2Search {
 	 */
 	protected function getRanksSinglePageResult($domHTML)
 	{
-		$rawResults = $domHTML->find('.charprofile', 0);
+		$rawResults = $domHTML->find('.row', 0);
 
 		$onePlayer = array();
 			
 		// Add search result player data
-		$profileNode = $rawResults->find('.profile', 0);
+		$profileNode = $rawResults->find('.character', 0);
 		$charName = $profileNode->find('.name a', 0)->plaintext;
 		$charLink = $profileNode->find('.name a', 0)->getAttribute('href');
 		$onePlayer['name'] = $charName;

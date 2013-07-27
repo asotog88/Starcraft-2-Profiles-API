@@ -30,19 +30,13 @@ class SC2Utils {
 	
 	public static function estimateBLink($ranksLink)
 	{	
+ 		$parts = explode('/', $ranksLink);
 		// Extract region from link
-		$startpos = strpos($ranksLink, '.com/') + 5;
-		$endpos = strpos($ranksLink, '/', $startpos);
-		$region = substr($ranksLink, $startpos, ($endpos - $startpos));
-		
+		$region = ($parts[4]) ? $parts[4] : '';
 		// Extract identifier from link
-		$startpos = $endpos + 1;
-		$endpos = strpos($ranksLink, '/', $startpos);
-		$identifier = substr($ranksLink, $startpos, ($endpos - $startpos));
-		
+		$identifier = ($parts[5]) ? $parts[5] : '';
 		// Extract name from link
-		$startpos = $endpos + 1;
-		$name = substr($ranksLink, $startpos);
+		$name = ($parts[6]) ? $parts[6] : '';
 		
 		// Estimate bnet link
 		if ( $region == 'cn' ) {
