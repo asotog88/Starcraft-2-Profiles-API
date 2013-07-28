@@ -1,0 +1,7 @@
+help:
+    cradlecore [option] task [arguments]
+
+create
+    project      Creates a new project/application
+    module       Generates a new module inside your project or application
+

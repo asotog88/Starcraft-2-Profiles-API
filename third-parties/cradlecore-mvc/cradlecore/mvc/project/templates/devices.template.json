@@ -1,0 +1,17 @@
+{
+    "iphone": [
+        "iPhone;"
+              ],
+    "ipad": [
+         "iPad;"
+            ],
+    "android": [
+         "Android"
+               ],
+    "blackberry": [
+         "BlackBerry"
+                  ],
+    "webos": [
+         "webOS"
+             ]
+}

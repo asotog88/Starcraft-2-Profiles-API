@@ -1,0 +1,16 @@
+{
+    "name": "{name}",
+    "environment": "development",
+    "environments": {
+        "development": {
+
+        },
+        "production": {
+
+        }
+    },
+    "modules_configuration": {
+
+    }
+
+}
