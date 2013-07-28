@@ -1,11 +1,11 @@
 <?php
 
-require_once('global-config.php');
-require_once('../helpers/helper-fns.php');
-require_once('../helpers/simple_html_dom.php');
-require_once('../helpers/RestUtils.php');
-require_once('../helpers/URLConnect.php');
-require_once('SC2Achievements.php');
+require_once(dirname(__FILE__) . '/global-config.php');
+require_once(dirname(__FILE__) . '/../helpers/helper-fns.php');
+require_once(dirname(__FILE__) . '/../helpers/simple_html_dom.php');
+require_once(dirname(__FILE__) . '/../helpers/RestUtils.php');
+require_once(dirname(__FILE__) . '/../helpers/URLConnect.php');
+require_once(dirname(__FILE__) . '/SC2Achievements.php');
 
 /**
  * Return all general info related to a starcraft 2 player.
@@ -15,7 +15,11 @@ require_once('SC2Achievements.php');
  * @version 1.0
  */
 class SC2Player {
-		
+	
+    public static $PLAYER_INFO_DEFAULT_PARAMS =  array('url' => 'http://us.battle.net/sc2/en/profile/2439371/1/coLMinigun/',
+                       'game' => 'hots',
+                       'type' => 'json');
+    
 	private $jsonData;
 	private $content;
 	private $dataToPrint;

@@ -1,0 +1,22 @@
+{
+    "entry_point": "/v2/",
+    "url_mappings": {
+        "player_search": {
+            "verbs": [ "get" ],
+            "path": "/player/search/:player",
+            "call": "webservices.searchPlayer"
+        },
+        
+        "player_info": {
+            "verbs": [ "get" ],
+            "path": "/player/info",
+            "call": "webservices.loadPlayerInfo"
+        },
+        
+         "player_division": {
+            "verbs": [ "get" ],
+            "path": "/player/division",
+            "call": "webservices.loadPlayerDivision"
+        }
+    }
+}

@@ -1,10 +1,10 @@
 <?php
 
-require_once('global-config.php');
-require_once('../helpers/helper-fns.php');
-require_once('../helpers/simple_html_dom.php');
-require_once('../helpers/RestUtils.php');
-require_once('../helpers/URLConnect.php');
+require_once(dirname(__FILE__) . '/global-config.php');
+require_once(dirname(__FILE__) . '/../helpers/helper-fns.php');
+require_once(dirname(__FILE__) . '/../helpers/simple_html_dom.php');
+require_once(dirname(__FILE__) . '/../helpers/RestUtils.php');
+require_once(dirname(__FILE__) . '/../helpers/URLConnect.php');
 
 /**
  * Handles all tasks related to player achievements. It only handles parsing Bnet data
@@ -46,9 +46,9 @@ class SC2Achievements {
 	{
 	  	// Construct an array of achivement sections
 		if ( $this->game == 'wol' ) {
-			$data = simplexml_load_file('../assets/achievements.xml');
+			$data = simplexml_load_file(dirname(__FILE__) . '/../assets/achievements.xml');
 		}else if ( $this->game == 'hots' ) {
-			$data = simplexml_load_file('../assets/achievements-hots.xml');
+			$data = simplexml_load_file(dirname(__FILE__) . '/../assets/achievements-hots.xml');
 		}
 		
 		$achievementsData = SC2Achievements::parseInnerAchievements($data->children(), $this->contentURL);

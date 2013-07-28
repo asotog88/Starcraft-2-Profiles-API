@@ -1,10 +1,10 @@
 <?php
 
-require_once('global-config.php');
-require_once('../helpers/helper-fns.php');
-require_once('../helpers/simple_html_dom.php');
-require_once('../helpers/RestUtils.php');
-require_once('../helpers/URLConnect.php');
+require_once(dirname(__FILE__) . '/global-config.php');
+require_once(dirname(__FILE__) . '/../helpers/helper-fns.php');
+require_once(dirname(__FILE__) . '/../helpers/simple_html_dom.php');
+require_once(dirname(__FILE__) . '/../helpers/RestUtils.php');
+require_once(dirname(__FILE__) . '/../helpers/URLConnect.php');
 
 /**
  * Handles all tasks related to divisions.
@@ -395,7 +395,7 @@ class SC2Division {
 			{
 			  // Get joined date
 	  			$joinedDate = $rankingNode->find('td', 0 + $bannerAdjustment)->getAttribute('data-tooltip');
-	  			$playerDivision['joinedDate'] = SC2Utils::joinedDateToTimeStamp($joinedDate, $this->options['url']);
+	  			$playerDivision['joinedDate'] = ''; /* SC2Utils::joinedDateToTimeStamp($joinedDate, $this->options['url']); */
 	        // $playerDivision['joinedDate'] = GeneralUtils::timeStampToDate($playerDivision['joinedDate']);
 
 	  			// Get rank

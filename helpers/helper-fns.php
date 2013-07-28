@@ -1,6 +1,6 @@
 <?php
-require_once('../classes/global-config.php');
-require_once('../helpers/RestUtils.php');
+require_once(dirname(__FILE__) . '/../classes/global-config.php');
+require_once(dirname(__FILE__) . '/../helpers/RestUtils.php');
 
 class SC2Utils {
 	

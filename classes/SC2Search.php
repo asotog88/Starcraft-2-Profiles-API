@@ -1,10 +1,10 @@
 <?php
 
-require_once('global-config.php');
-require_once('../helpers/helper-fns.php');
-require_once('../helpers/simple_html_dom.php');
-require_once('../helpers/RestUtils.php');
-require_once('../helpers/URLConnect.php');
+require_once(dirname(__FILE__) . '/global-config.php');
+require_once(dirname(__FILE__) . '/../helpers/helper-fns.php');
+require_once(dirname(__FILE__) . '/../helpers/simple_html_dom.php');
+require_once(dirname(__FILE__) . '/../helpers/RestUtils.php');
+require_once(dirname(__FILE__) . '/../helpers/URLConnect.php');
 
 /**
  * Handles parsing of all search related results on sc2ranks
@@ -19,6 +19,14 @@ class SC2Search {
 	private $league;
 	private $options;
 	private $dataToPrint;
+	public static $SEARCH_RESULTS_URL_DEFAULT_PARAMS = array(
+                           'game' => 'hots',  // hots (heart of the swarm or wol (wings of libert))
+                           'region' => 'global',
+                           'ladder' => '1v1', // 1v1, 2v2, 3v3, 4v4, 2v2r, 3v3r, 4v4r
+                           'league' => 'all', //all, grandmaster, master, diamond, platinum, gold, silver, bronze
+                           'name' => 'Draco', // player name
+                           'type' => 'exact');
+	public static $SEARCH_RESULTS_DEFAULT_OPTIONS = array('type' => 'json', 'content' => '');
 	
 	public function __construct($options)
 	{

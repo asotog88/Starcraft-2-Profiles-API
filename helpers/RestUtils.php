@@ -68,7 +68,7 @@ class RestUtils
 	public static function getStatusCodeMessage($status)
 	{
 		// All code and values stored in ini file
-		$codes = parse_ini_file('../assets/statusCodes.ini');
+		$codes = parse_ini_file(dirname(__FILE__) . '/../assets/statusCodes.ini');
 		return (isset($codes[$status])) ? $codes[$status] : '';
 	}
 	
