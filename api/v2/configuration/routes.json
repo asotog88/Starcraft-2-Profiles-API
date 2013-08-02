@@ -3,13 +3,13 @@
     "url_mappings": {
         "player_search": {
             "verbs": [ "get" ],
-            "path": "/player/search/:player",
+            "path": "/player/search",
             "call": "webservices.searchPlayer"
         },
         
         "player_info": {
             "verbs": [ "get" ],
-            "path": "/player/info",
+            "path": "/player/info/:id",
             "call": "webservices.loadPlayerInfo"
         },
         

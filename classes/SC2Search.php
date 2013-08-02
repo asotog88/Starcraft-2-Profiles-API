@@ -126,6 +126,7 @@ class SC2Search {
 			    $onePlayer['name'] = $charName;
 			    $onePlayer['ranksURL'] = $charLink;
 			    $onePlayer['bnetURL'] = SC2Utils::estimateBLink($onePlayer['ranksURL']);
+			    $onePlayer['bnetId'] = base64_encode($onePlayer['bnetURL']);
 			    $onePlayer['region'] = SC2Utils::playerRegionFromBnetURL($onePlayer['bnetURL']);
 			    	
 			    // Get user's best division data

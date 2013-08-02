@@ -16,7 +16,7 @@ class WebServicesController extends CradleCoreController {
 
     /**
      * Search players action
-     * for example: /api/v2/player/search/tankan?game=wol
+     * for example: /api/v2/player/search?player=tankan&game=wol
      *
      */
     public function searchPlayer() {
@@ -25,7 +25,7 @@ class WebServicesController extends CradleCoreController {
         $options['region'] = $this->params->getParam('region');
         $options['ladder'] = $this->params->getParam('ladder');
         $options['league'] = $this->params->getParam('league');
-        $options['name'] = $this->params->getParamFromUrl('player');
+        $options['name'] = $this->params->getParam('player');
         $options['type'] =  $this->params->getParam('type');
 
         $options = GeneralUtils::getDefaults(SC2Search::$SEARCH_RESULTS_URL_DEFAULT_PARAMS, $options);
@@ -47,12 +47,12 @@ class WebServicesController extends CradleCoreController {
     
     /**
      * Loads player info action
-     * for example: /api/v2/player/info?url=http://us.battle.net/sc2/en/profile/3923192/1/Tankan/
+     * for example: /api/v2/player/info/aHR0cDovL3VzLmJhdHRsZS5uZXQvc2MyL2VuL3Byb2ZpbGUvMzkyMzE5Mi8xL1Rhbmthbi8=/
      * 
      */
     public function loadPlayerInfo() {
         $options = array();
-        $options['url'] =  $this->params->getParam('url');
+        $options['url'] = base64_decode($this->params->getParamFromUrl('id'));
         $options['game'] = $this->params->getParam('game');
         if (isset( $options['url'])) {
             $options = GeneralUtils::getDefaults(SC2Player::$PLAYER_INFO_DEFAULT_PARAMS, $options);
