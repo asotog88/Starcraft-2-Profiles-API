@@ -310,6 +310,8 @@ class SC2Player {
 		
 		// Save ladder's url
 		$jsonArray['divisionsURL'] = $bnetURL . "ladder/leagues";
+		$jsonArray['divisionsURL_Id'] = base64_encode($bnetURL . "ladder/leagues");
+		
 		
 		// Save ladder's showcase url
 		$jsonArray['divisionsShowcaseURL'] = $bnetURL . "ladder/";

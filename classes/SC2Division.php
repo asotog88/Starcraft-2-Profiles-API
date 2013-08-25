@@ -16,6 +16,12 @@ require_once(dirname(__FILE__) . '/../helpers/URLConnect.php');
  */
 class SC2Division {
 
+    public static $PROGRESS_GOING_DOWN = -1;
+    
+    public static $PROGRESS_GOING_UP = 1;
+    
+    public static $PROGRESS_SAME = 0;
+    
 	private $options;
 	
 	/**
@@ -395,8 +401,9 @@ class SC2Division {
 			{
 			  // Get joined date
 	  			$joinedDate = $rankingNode->find('td', 0 + $bannerAdjustment)->getAttribute('data-tooltip');
-	  			$playerDivision['joinedDate'] = ''; /* SC2Utils::joinedDateToTimeStamp($joinedDate, $this->options['url']); */
-	        // $playerDivision['joinedDate'] = GeneralUtils::timeStampToDate($playerDivision['joinedDate']);
+	  			$playerDivision['progress'] = $this->getDivisionProgressStatus($rankingNode->find('td', 0 + $bannerAdjustment));
+	  			$playerDivision['joinedDate'] = SC2Utils::joinedDateToTimeStamp($joinedDate, $this->options['url']);
+	            $playerDivision['joinedDate'] = GeneralUtils::timeStampToDate($playerDivision['joinedDate']);
 
 	  			// Get rank
 	  			$rank = $rankingNode->find('td', 1 + $bannerAdjustment)->plaintext;
@@ -482,6 +489,23 @@ class SC2Division {
     
 		return $divisionData;
 	}
+	
+	/**
+	 * Return the player(s) status from the corresponding ladder, if is going up,
+	 * down or staying in the same
+	 * 
+	 * @param Int $statusNode
+	 */
+	private function getDivisionProgressStatus($statusNode) {
+	    $img = $statusNode->find('img', 0);
+	    if ($img) {
+	        $imgSrc = $img->getAttribute('src');
+	        return (strpos($imgSrc, 'arrow-down') > 0 ) ? SC2Division::$PROGRESS_GOING_DOWN :
+	           ((strpos($imgSrc, 'arrow-up') > 0) ? SC2Division::$PROGRESS_GOING_UP : SC2Division::$PROGRESS_SAME);
+	    }
+	    return SC2Division::$PROGRESS_SAME;
+	}
+	
 	
 	/**
 	 * Parses Ranks division content

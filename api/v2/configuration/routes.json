@@ -15,7 +15,7 @@
         
          "player_division": {
             "verbs": [ "get" ],
-            "path": "/player/division",
+            "path": "/player/division/:divisionUrlId",
             "call": "webservices.loadPlayerDivision"
         }
     }

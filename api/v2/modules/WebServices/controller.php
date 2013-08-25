@@ -72,19 +72,19 @@ class WebServicesController extends CradleCoreController {
     
     /**
      * Loads the player division status
-     * for example: /api/v2/player/division?url=http://us.battle.net/sc2/en/profile/3923192/1/Tankan/ladder/leagues
+     * for example: /api/v2/player/division/aHR0cDovL3VzLmJhdHRsZS5uZXQvc2MyL2VuL3Byb2ZpbGUvMzkyMzE5Mi8xL1Rhbmthbi9sYWRkZXIvbGVhZ3Vlcw==
      * 
      */
     public function loadPlayerDivision() {
         $options = array();
-        $options['url'] =  $this->params->getParam('url');
+        $options['url'] = base64_decode($this->params->getParamFromUrl('divisionUrlId'));
         $options['game'] = $this->params->getParam('game');
         if (isset($options['url'])) {
             $options = GeneralUtils::getDefaults(SC2Player::$PLAYER_INFO_DEFAULT_PARAMS, $options);
             $urlconnect = new URLConnect($options['url'], 100, FALSE);
             if ( $urlconnect->getHTTPCode() != 200 ) {
                 /* TODO: error handle */
-                exit;
+                exit; 
             }
             $options['content'] = $urlconnect->getContent();
             $sc2division = new SC2Division($options);
